@@ -4,6 +4,7 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 
 var routes = require('./routes/index');
 var search = require('./routes/search');
@@ -29,6 +30,11 @@ app.use('/search', search);
 app.use('/comic', comic);
 app.use('/chapters', chapters);
 app.use('/page', page);
+
+app.use(cors({
+  origin: 'http://localhost:8080',
+  credentials: true
+}));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -59,12 +65,6 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:8080"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
 });
 
 module.exports = app;
